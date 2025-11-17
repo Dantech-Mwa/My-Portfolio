@@ -4,65 +4,123 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Mwanza Wambua — Data Scientist & AI Data Specialist</title>
-<link rel="stylesheet" href="styles.css">
+
+<!-- Google Analytics (GA4) - Replace G-XXXXXXXXXX with your Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<style>
+  :root{
+    --bg:#f7fbff; --card:#ffffff; --accent:#0b3d91; --muted:#6b7280;
+    --glass: rgba(255,255,255,0.7);
+    --radius:12px; --max:1100px;
+  }
+  *{box-sizing:border-box}
+  body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:linear-gradient(180deg,var(--bg),#ffffff);color:#102a43}
+  .wrap{max-width:var(--max);margin:0 auto;padding:28px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{width:64px;height:64px;border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(11,61,145,0.08)}
+  .logo img{width:100%;height:100%;object-fit:cover;display:block}
+  h1{margin:0;font-size:18px}
+  nav a{margin-left:14px;color:var(--muted);text-decoration:none;font-weight:600}
+  .hero{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:center;padding:36px 0}
+  .hero h2{font-size:32px;margin:0 0 12px;color:var(--accent);line-height:1.05;opacity:0;transform:translateY(10px);animation:fadeUp .6s .15s forwards}
+  .lead{color:var(--muted);margin-bottom:18px;opacity:0;transform:translateY(10px);animation:fadeUp .6s .3s forwards}
+  .btn{display:inline-block;padding:10px 16px;border-radius:10px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;box-shadow:0 8px 20px rgba(11,61,145,0.12)}
+  .btn.secondary{background:transparent;color:var(--accent);border:1px solid rgba(11,61,145,0.08);font-weight:700}
+  .card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:0 6px 20px rgba(11,61,145,0.04)}
+  .highlights{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+  .feature{padding:18px;border-radius:10px;background:linear-gradient(180deg,rgba(11,61,145,0.03),#fff);transition:transform .28s,box-shadow .28s}
+  .feature:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(11,61,145,0.06)}
+  footer{margin-top:40px;padding:22px 0;color:var(--muted);font-size:14px;text-align:center}
+  .profile-visual{height:100%;display:flex;align-items:center;justify-content:center}
+  .profile-visual .tile{width:320px;height:220px;border-radius:12px;background:linear-gradient(90deg,#081a3a, #0b3d91);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;box-shadow:0 20px 60px rgba(11,61,145,0.12)}
+  .tile h3{margin:0 0 6px}
+  .socials{margin-top:10px}
+  .socials a{color:#fff;margin-right:10px;text-decoration:none;font-weight:700}
+  @keyframes fadeUp{to{opacity:1;transform:none}}
+  /* Responsive */
+  @media(max-width:900px){
+    .hero{grid-template-columns:1fr}
+    .highlights{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    nav{display:none}
+  }
+</style>
 </head>
 <body>
-<header class="site-header">
-  <div class="container header-grid">
-    <div class="brand">
-      <img src="assets/images/headshot.svg" alt="Mwanza Wambua" class="logo">
-      <div>
-        <h1>Mwanza Wambua</h1>
-        <p class="sub">Data Scientist · MERL Specialist · AI Data & Annotation Expert</p>
-      </div>
+
+<header class="wrap">
+  <div class="brand">
+    <div class="logo" aria-hidden="true">
+      <img src="assets/images/headshot.svg" alt="Mwanza Wambua initials">
     </div>
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="projects.html">Work</a>
-      <a href="writing.html">Writing</a>
-      <a href="resume.html">Resume</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+    <div>
+      <h1>Mwanza Wambua</h1>
+      <div style="color:var(--muted);font-size:13px">Data Scientist · MERL Specialist · AI Data & Annotation</div>
+    </div>
   </div>
+
+  <nav aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Work</a>
+    <a href="writing.html">Writing</a>
+    <a href="resume.html">Resume</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 </header>
 
-<main class="container">
+<main class="wrap">
   <section class="hero">
-    <h2>I turn complex data into clear insights and dependable datasets</h2>
-    <p class="lead">I design data systems, prepare high-quality datasets for analysis and AI workflows, and translate findings into actionable reports and dashboards.</p>
-    <p>
-      <a class="btn" href="projects.html">View Projects</a>
-      <a class="btn btn-outline" href="assets/Mwanza_Wambua_Resume.pdf" target="_blank">Download Resume (PDF)</a>
-    </p>
+    <div>
+      <h2>I turn complex data into clear insights and dependable datasets</h2>
+      <p class="lead">I design data systems, prepare high-quality datasets for analysis and AI workflows, and translate findings into dashboards and evidence-based reports used by decision-makers.</p>
+      <p>
+        <a class="btn" href="projects.html">View Projects</a>
+        <a class="btn secondary" href="assets/Mwanza_Wambua_Resume.pdf" target="_blank" rel="noopener">Download Resume</a>
+      </p>
+
+      <div class="highlights" aria-hidden="true">
+        <div class="feature card">
+          <strong>Data Engineering</strong>
+          <div style="color:var(--muted);margin-top:8px">SQL, ETL, MMIS design, data governance and pipelines.</div>
+        </div>
+        <div class="feature card">
+          <strong>AI & Annotation</strong>
+          <div style="color:var(--muted);margin-top:8px">Annotation guidelines, QA workflows, LLM evaluation & prompt testing.</div>
+        </div>
+        <div class="feature card">
+          <strong>Reporting & Dashboards</strong>
+          <div style="color:var(--muted);margin-top:8px">Power BI, analytical briefs, and stakeholder-ready reporting.</div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="profile-visual" aria-hidden="true">
+      <div class="tile">
+        <h3>Mwanza Wambua</h3>
+        <div style="opacity:.95">Makueni, Kenya • wambuamwanza6@gmail.com</div>
+        <div class="socials"><a href="#" style="opacity:.95">LinkedIn</a><a href="#" style="opacity:.95">GitHub</a></div>
+      </div>
+    </aside>
   </section>
 
-  <section class="highlights">
-    <div class="card">
-      <h3>Data Engineering</h3>
-      <p>Database administration, ETL, data cleaning, SQL, MMIS design, and data governance.</p>
-    </div>
-    <div class="card">
-      <h3>AI & Annotation</h3>
-      <p>Dataset curation, annotation guidelines, QA workflows, LLM evaluation & prompt testing.</p>
-    </div>
-    <div class="card">
-      <h3>Reporting & Visualization</h3>
-      <p>Power BI dashboards, analytical briefs, policy notes, and clear stakeholder reporting.</p>
-    </div>
-  </section>
-
-  <section class="cta">
-    <h3>Available for consulting, freelance, and contract roles</h3>
-    <p>Email: <a href="mailto:wambuamwanza6@gmail.com">wambuamwanza6@gmail.com</a> • Phone: +254 720 208150</p>
+  <section class="card" style="margin-top:22px">
+    <h3 style="margin-top:0">Available for consulting, freelance and contract roles</h3>
+    <p style="color:var(--muted)">Email: <a href="mailto:wambuamwanza6@gmail.com">wambuamwanza6@gmail.com</a> • Phone: +254 720 208150</p>
   </section>
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <p>&copy; 2025 Mwanza Wambua — Makueni, Kenya • English (C2) • Swahili (C1)</p>
-  </div>
+<footer>
+  <div class="wrap">© 2025 Mwanza Wambua — Makueni, Kenya • English (C2) • Swahili (C1)</div>
 </footer>
 
 </body>
 </html>
+
