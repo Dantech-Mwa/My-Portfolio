@@ -3,43 +3,64 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Writing & Reports</title>
-<link rel="stylesheet" href="styles.css">
+<title>Writing & Reports — Mwanza Wambua</title>
+
+<style>
+  :root{--accent:#0b3d91;--muted:#6b7280;--bg:#ffffff;--card:#fff;--max:1100px}
+  body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:linear-gradient(180deg,#f7fbff,#fff);color:#102a43}
+  .wrap{max-width:var(--max);margin:0 auto;padding:28px}
+  header{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+  nav a{margin-left:12px;color:var(--muted);text-decoration:none}
+  .list{display:grid;gap:14px;margin-top:18px}
+  .doc{background:#fff;border-radius:12px;padding:16px;box-shadow:0 10px 30px rgba(11,61,145,0.04)}
+  .meta{color:var(--muted);font-size:13px}
+  a.view{display:inline-block;margin-top:10px;padding:8px 12px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none}
+</style>
 </head>
 <body>
-<header class="site-header small">
-  <div class="container header-grid">
-    <div class="brand">
-      <img src="assets/images/headshot.svg" alt="Mwanza Wambua" class="logo">
-      <div>
-        <h1>Mwanza Wambua</h1>
-        <p class="sub">Writing, Reports & Case Studies</p>
-      </div>
+<header class="wrap">
+  <div style="display:flex;gap:14px;align-items:center">
+    <img src="assets/images/headshot.svg" alt="" style="width:56px;height:56px;border-radius:10px">
+    <div>
+      <h1 style="margin:0">Writing & Reports</h1>
+      <div style="color:var(--muted);font-size:13px">Analytical briefs, case studies, and technical notes</div>
     </div>
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="projects.html">Work</a>
-      <a href="writing.html">Writing</a>
-      <a href="resume.html">Resume</a>
-      <a href="contact.html">Contact</a>
-    </nav>
   </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="projects.html">Work</a>
+    <a href="resume.html">Resume</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 </header>
 
-<main class="container content">
-  <h2>Selected Reports</h2>
-  <ul class="docs-list">
-    <li><a href="assets/Mwanza_Wambua_Resume.pdf" target="_blank">Analytical Brief — Agribusiness Profitability (sample)</a> — Findings and recommendations used by advisors.</li>
-    <li><a href="assets/Mwanza_Wambua_Resume.pdf" target="_blank">KIWASH Water Source Mapping Report (sample)</a> — MIS structure, mapping approach, recommendations.</li>
-  </ul>
-  <p>Contact me for full reports and detailed case studies.</p>
+<main class="wrap">
+  <p style="color:var(--muted)">Selected highlights — click to view sample (PDF).</p>
+
+  <section class="list">
+    <article class="doc">
+      <h3 style="margin:0">Analytical Brief — Agribusiness Profitability (Tanzania & Malawi)</h3>
+      <div class="meta">Summary • Recommendations • Models (Python/SQL)</div>
+      <a class="view" href="assets/Mwanza_Wambua_Resume.pdf" target="_blank" rel="noopener">View Sample (PDF)</a>
+    </article>
+
+    <article class="doc">
+      <h3 style="margin:0">KIWASH Water Source Mapping Report (Makueni)</h3>
+      <div class="meta">MIS design, mapping approach, and recommendations</div>
+      <a class="view" href="assets/Mwanza_Wambua_Resume.pdf" target="_blank" rel="noopener">View Sample (PDF)</a>
+    </article>
+
+    <article class="doc">
+      <h3 style="margin:0">Human–Carnivore Conflict Study — Field report</h3>
+      <div class="meta">Qualitative & Quantitative analysis</div>
+      <a class="view" href="assets/Mwanza_Wambua_Resume.pdf" target="_blank" rel="noopener">View Sample (PDF)</a>
+    </article>
+  </section>
+
+  <p style="color:var(--muted);margin-top:18px">Want the full reports? <a href="contact.html">Contact me</a> and I'll share the full package and data extracts.</p>
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <p>&copy; 2025 Mwanza Wambua</p>
-  </div>
-</footer>
+<footer style="text-align:center;color:var(--muted);padding:22px 0">© 2025 Mwanza Wambua</footer>
 </body>
 </html>
+
