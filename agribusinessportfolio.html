@@ -267,42 +267,5 @@ function downloadPDF(){
 }
 </script>
 
-    <!-- Hidden canvas for generating thumbnail -->
-<canvas id="thumbnailCanvas" style="display:none"></canvas>
-
-<script>
-window.addEventListener('load', function() {
-    // Select the chart canvas you want as a thumbnail
-    const chartCanvas = document.getElementById('heatmapChart'); // choose any chart
-    const thumbnailCanvas = document.getElementById('thumbnailCanvas');
-    const ctx = thumbnailCanvas.getContext('2d');
-
-    // Set thumbnail size
-    const thumbWidth = 120;
-    const thumbHeight = 120;
-    thumbnailCanvas.width = thumbWidth;
-    thumbnailCanvas.height = thumbHeight;
-
-    // Draw chart onto thumbnail canvas
-    ctx.drawImage(chartCanvas, 0, 0, thumbWidth, thumbHeight);
-
-    // Create an image element for preview (optional)
-    const imgPreview = document.createElement('img');
-    imgPreview.src = thumbnailCanvas.toDataURL('image/png');
-    imgPreview.alt = 'Chart Thumbnail';
-    imgPreview.style.width = '80px';
-    imgPreview.style.height = '80px';
-    imgPreview.style.border = '1px solid #ccc';
-    imgPreview.style.borderRadius = '6px';
-    imgPreview.style.marginTop = '10px';
-    imgPreview.style.display = 'block';
-
-    // Add it to the top of the page or any container
-    document.body.prepend(imgPreview);
-
-    console.log('Thumbnail generated! Right-click and save as chart-thumbnail.png');
-});
-</script>
-
 </body>
 </html>
