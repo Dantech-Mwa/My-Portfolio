@@ -14,7 +14,8 @@
   .list{display:grid;gap:14px;margin-top:18px}
   .doc{background:#fff;border-radius:12px;padding:16px;box-shadow:0 10px 30px rgba(11,61,145,0.04)}
   .meta{color:var(--muted);font-size:13px}
-  a.view{display:inline-block;margin-top:10px;padding:8px 12px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none}
+  a.view{display:flex;align-items:center;gap:8px;margin-top:10px;padding:8px 12px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none}
+  a.view img{width:40px;height:40px;border-radius:6px;object-fit:cover}
 </style>
 </head>
 <body>
@@ -35,21 +36,27 @@
 </header>
 
 <main class="wrap">
-  <p style="color:var(--muted)">Selected highlights — click to view sample (PDF).</p>
+  <p style="color:var(--muted)">Selected highlights — click to view sample (interactive dashboard).</p>
 
   <section class="list">
+    <!-- Analytical Brief with dashboard link -->
     <article class="doc">
-      <h3 style="margin:0">Analytical Brief — Agribusiness Profitability (Tanzania & Malawi)</h3>
-      <div class="meta">Summary • Recommendations • Models (Python/SQL)</div>
-      <a class="view" href="assets/Mwanza_Wambua_Resume.pdf" target="_blank" rel="noopener">View Sample (PDF)</a>
+      <h3 style="margin:0">Analytical Brief — Agribusiness Profitability (Kenya)</h3>
+      <div class="meta">Executive summary • Multi-sector charts • Heatmap • Trend analysis</div>
+      <a class="view" href="assets/Agribusiness_Portfolio.html" target="_blank" rel="noopener">
+        <img src="assets/images/chart-thumbnail.png" alt="Preview Chart">
+        View Sample Dashboard
+      </a>
     </article>
 
+    <!-- Placeholder for KIWASH -->
     <article class="doc">
       <h3 style="margin:0">KIWASH Water Source Mapping Report (Makueni)</h3>
       <div class="meta">MIS design, mapping approach, and recommendations</div>
       <a class="view" href="assets/Mwanza_Wambua_Resume.pdf" target="_blank" rel="noopener">View Sample (PDF)</a>
     </article>
 
+    <!-- Placeholder for Human–Carnivore Conflict -->
     <article class="doc">
       <h3 style="margin:0">Human–Carnivore Conflict Study — Field report</h3>
       <div class="meta">Qualitative & Quantitative analysis</div>
@@ -63,4 +70,5 @@
 <footer style="text-align:center;color:var(--muted);padding:22px 0">© 2025 Mwanza Wambua</footer>
 </body>
 </html>
+
 
