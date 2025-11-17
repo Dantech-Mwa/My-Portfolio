@@ -93,11 +93,30 @@ fetch('assets/images/map-chat.png', {method: 'HEAD'})
 
 
     <!-- Placeholder for Human–Carnivore Conflict -->
+     
     <article class="doc">
-      <h3 style="margin:0">Human–Carnivore Conflict Study — Field report</h3>
-      <div class="meta">Qualitative & Quantitative analysis</div>
-      <a class="view" href="assets/Mwanza_Wambua_Resume.pdf" target="_blank" rel="noopener">View Sample (PDF)</a>
-    </article>
+  <h3 style="margin:0">Human Wildlife Conflicts</h3>
+  <div class="meta">Human-wildlife conflit heatmap • Conservancies • Wildlife• Conservancy GIS Points</div>
+  <a class="view" href="human-wildlife.html" target="_blank" rel="noopener">
+    <img id="dashboardThumbnail" src="assets/images/human-wildlife.png" alt="Preview Chart">
+    View the Map
+  </a>
+</article>
+
+<script>
+// Dynamically check if thumbnail exists
+fetch('assets/images/human-wildlife.png', {method: 'HEAD'})
+  .then(res => {
+    if (!res.ok) {
+      // If thumbnail doesn't exist, use a default placeholder or fetch from dashboard page
+      document.getElementById('dashboardThumbnail').src = 'assets/images/chart-placeholder.png';
+    }
+  })
+  .catch(err => {
+    console.warn('Thumbnail check failed, using placeholder.', err);
+    document.getElementById('dashboardThumbnail').src = 'assets/images/chart-placeholder.png';
+  });
+</script>
   </section>
 
   <p style="color:var(--muted);margin-top:18px">Want the full reports? <a href="contact.html">Contact me</a> and I'll share the full package and data extracts.</p>
