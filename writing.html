@@ -66,11 +66,31 @@ fetch('assets/images/chart-thumbnail.png', {method: 'HEAD'})
 
 
     <!-- Placeholder for KIWASH -->
+    
     <article class="doc">
-      <h3 style="margin:0">KIWASH Water Source Mapping Report (Makueni)</h3>
-      <div class="meta">MIS design, mapping approach, and recommendations</div>
-      <a class="view" href="assets/Mwanza_Wambua_Resume.pdf" target="_blank" rel="noopener">View Sample (PDF)</a>
-    </article>
+  <h3 style="margin:0">KIWASH MAPPING — Makueni County</h3>
+  <div class="meta">Makueni County Map • Water Sources • KIWASH AREAS• GIS Points</div>
+  <a class="view" href="assets/kiwash-makueni.html" target="_blank" rel="noopener">
+    <img id="dashboardThumbnail" src="assets/images/map-chat.png" alt="Preview Chart">
+    View the Map
+  </a>
+</article>
+
+<script>
+// Dynamically check if thumbnail exists
+fetch('assets/images/map-chat.png', {method: 'HEAD'})
+  .then(res => {
+    if (!res.ok) {
+      // If thumbnail doesn't exist, use a default placeholder or fetch from dashboard page
+      document.getElementById('dashboardThumbnail').src = 'assets/images/chart-placeholder.png';
+    }
+  })
+  .catch(err => {
+    console.warn('Thumbnail check failed, using placeholder.', err);
+    document.getElementById('dashboardThumbnail').src = 'assets/images/chart-placeholder.png';
+  });
+</script>
+
 
     <!-- Placeholder for Human–Carnivore Conflict -->
     <article class="doc">
