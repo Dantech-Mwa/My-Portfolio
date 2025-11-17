@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Agribusiness Portfolio Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin:0; padding:0;
+    background:#f5f5f0 url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat;
+    color:#333;
+}
+header {
+    background:#4caf50; color:#fff;
+    padding:25px 40px; text-align:center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+header h1 { margin:0; font-size:2rem; }
+header p { margin:5px 0 0; font-size:1rem; font-weight:400; }
+.container { max-width: 1200px; margin:auto; padding:20px; }
+.section { margin-bottom:40px; background:#fff; border-radius:12px;
+             box-shadow:0 6px 20px rgba(0,0,0,0.08); padding:25px; }
+h2 { color:#2e7d32; margin-top:0; display:flex; align-items:center; font-size:1.6rem; }
+h2 i { margin-right:10px; font-size:1.2rem; color:#4caf50; }
+p { line-height:1.7; }
+.row { display:flex; flex-wrap:wrap; margin:0 -10px; }
+.col { flex:1; min-width:300px; padding:10px; }
+.chart-container { width:100%; padding:15px; background:#f0f4f1; border-radius:10px;
+                     box-shadow:0 4px 15px rgba(0,0,0,0.05); }
+.filter-buttons { text-align:center; margin:10px 0; }
+.filter-buttons button { margin:0 5px; padding:6px 14px; border:none; border-radius:5px; background:#388e3c; color:#fff; cursor:pointer; font-weight:500; transition:0.3s; }
+.filter-buttons button:hover { background:#2e7d32; }
+.filter-buttons button.active { background:#1b5e20; }
+.pdf-btn { display:block; margin:25px auto; padding:12px 22px; border:none; border-radius:6px; background:#ef5350; color:#fff; font-size:16px; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+.narration { margin-top:12px; }
+.narration-toggle { cursor:pointer; color:#4caf50; text-decoration:underline; font-weight:500; }
+.hidden { display:none; }
+ol.references { font-size:0.9rem; margin-top:12px; padding-left:20px; }
+ol.references li { margin-bottom:5px; }
+footer { text-align:center; padding:20px; background:#e0e0e0; margin-top:30px; font-size:0.9rem; color:#555; border-top:1px solid #ccc; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><i class="fas fa-seedling"></i> Agribusiness Portfolio Dashboard</h1>
+  <p>November 2025 | Prepared by Mwanza Wambua</p>
+</header>
+
+<div class="container">
+
+  <!-- Executive Summary -->
+  <section class="section">
+    <h2><i class="fas fa-info-circle"></i> Executive Summary</h2>
+    <div class="row">
+      <div class="col">
+        <p>This portfolio presents a multi-sector agribusiness analysis with realistic Kenyan data. It covers <strong>Livestock</strong> (dairy, goats, pigs), <strong>Poultry</strong> (broilers, layers), and <strong>Horticulture</strong> (tomatoes, onions, herbs, spices). Interactive charts, heatmaps, and trend lines visualize revenue, risk, and profitability.</p>
+        <p>Drawing on Kenyan smallholder realities — average dairy cow daily yields of <strong>5–8 litres per cow per day</strong> (AfriCheck, 2024), broiler cost/revenue structures (AgCenture, 2025), and high market demand for poultry (AgCenture, 2024) — this dashboard supports data-driven strategic decisions. High-risk months are flagged to guide investment and risk mitigation.</p>
+        <p><strong>References:</strong></p>
+        <ol class="references">
+          <li>AfriCheck. (2024). <em>Cost of Milk Production in Kenya</em>. https://africacheck.org</li>
+          <li>AgCenture. (2025). <em>Beginner's Guide to Broiler Farming in Kenya</em>. https://www.agcenture.com</li>
+          <li>AgCenture. (2024). <em>Poultry Farming in Kenya: Market and Production Insights</em>. https://www.agcenture.com</li>
+        </ol>
+      </div>
+      <div class="col chart-container">
+        <canvas id="multiChart"></canvas>
+        <div class="filter-buttons">
+          <button class="active" onclick="filterSector('All')">All</button>
+          <button onclick="filterSector('Livestock')">Livestock</button>
+          <button onclick="filterSector('Poultry')">Poultry</button>
+          <button onclick="filterSector('Horticulture')">Horticulture</button>
+        </div>
+        <div class="narration">
+          <span class="narration-toggle" onclick="toggleNarr('multiNarr')">Show insight</span>
+          <div id="multiNarr" class="hidden">
+            <p>Gross margin vs investment across sectors: horticulture crops (tomatoes, spices) show strong returns, dairy provides stable returns, and poultry is moderate but risk-prone.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Heatmap & Trends -->
+  <section class="section">
+    <div class="row">
+      <div class="col chart-container">
+        <h2><i class="fas fa-fire-alt"></i> Profitability Heatmap – Risk vs Reward</h2>
+        <canvas id="heatmapChart"></canvas>
+        <div class="filter-buttons">
+          <button class="active" onclick="filterHeatmap('All')">All</button>
+          <button onclick="filterHeatmap('Livestock')">Livestock</button>
+          <button onclick="filterHeatmap('Poultry')">Poultry</button>
+          <button onclick="filterHeatmap('Horticulture')">Horticulture</button>
+        </div>
+        <div class="narration">
+          <span class="narration-toggle" onclick="toggleNarr('heatNarr')">Show insight</span>
+          <div id="heatNarr" class="hidden">
+            <p>Red indicates high-risk crops like broilers and tomatoes, yellow medium-risk, green low-risk (herbs, spices). Helps visualize risk-adjusted profitability instantly.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col chart-container">
+        <h2><i class="fas fa-chart-line"></i> Monthly Revenue Trends (Jan–Dec)</h2>
+        <canvas id="trendChart"></canvas>
+        <div class="filter-buttons">
+          <button class="active" onclick="filterTrend('All')">All</button>
+          <button onclick="filterTrend('Livestock')">Livestock</button>
+          <button onclick="filterTrend('Poultry')">Poultry</button>
+          <button onclick="filterTrend('Horticulture')">Horticulture</button>
+        </div>
+        <div class="narration">
+          <span class="narration-toggle" onclick="toggleNarr('trendNarr')">Show insight</span>
+          <div id="trendNarr" class="hidden">
+            <p>Monthly trends reflect realistic seasonal patterns: dairy peaks early year, poultry shows cyclical production spikes, horticulture peaks aligned with harvest seasons. High-risk months highlighted.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <button class="pdf-btn" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download Dashboard as PDF</button>
+
+</div>
+
+<footer>
+  <p>© 2025 Mwanza Wambua. All rights reserved.</p>
+</footer>
+
+<script>
+const sectors = ['Dairy Cattle','Goats','Pigs','Broilers','Layers','Tomatoes','Onions','Herbs','Spices'];
+const sectorTypes = ['Livestock','Livestock','Livestock','Poultry','Poultry','Horticulture','Horticulture','Horticulture','Horticulture'];
+const grossMargin = [130000,20000,30000,25000,40000,150000,100000,130000,170000];
+const investment = [350000,45000,80000,50000,80000,150000,120000,70000,80000];
+const risk = ['Medium','Low','Medium','High','Medium','High','Medium','Low','Low'];
+const trendColors = ['#2962ff','#ff6f00','#43a047','#8e24aa','#ab47bc','#00acc1','#ff7043','#fbc02d','#7b1fa2'];
+const iconsMap = {'Dairy Cattle':'🐄','Goats':'🐐','Pigs':'🐖','Broilers':'🐔','Layers':'🐔','Tomatoes':'🍅','Onions':'🧄','Herbs':'🌿','Spices':'🌶️'};
+
+// MultiChart
+const ctxMulti = document.getElementById('multiChart').getContext('2d');
+const multiChart = new Chart(ctxMulti,{type:'bar',data:{ labels: sectors, datasets:[
+  {label:'Gross Margin (KES)', data:grossMargin, backgroundColor:'#2962ff'},
+  {label:'Investment (KES)', data:investment, backgroundColor:'#43a047'}
+]}, options:{responsive:true, plugins:{title:{display:true,text:'Gross Margin vs Investment'}, tooltip:{mode:'index', intersect:false}}, interaction:{mode:'nearest', axis:'x', intersect:false}, scales:{y:{beginAtZero:true}},
+plugins:[{
+  id:'iconPlugin', afterDatasetsDraw(chart){
+    const ctx = chart.ctx;
+    chart.data.datasets.forEach((dataset,i)=>{
+      chart.getDatasetMeta(i).data.forEach((bar,index)=>{
+        const x = bar.x;
+        const y = bar.y - 10;
+        ctx.font = '16px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(iconsMap[chart.data.labels[index]] || '', x, y);
+      });
+    });
+  }
+}]}});
+
+// Filter functions
+function filterSector(sector){
+  const buttons = document.querySelectorAll('#multiChart ~ .filter-buttons button');
+  buttons.forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  multiChart.data.labels = sectors.filter((s,i)=> sector==='All' || sectorTypes[i]===sector );
+  multiChart.data.datasets.forEach(ds=>{
+    ds.data = ds.label==='Gross Margin (KES)' ? grossMargin.filter((g,i)=> sector==='All' || sectorTypes[i]===sector)
+                                           : investment.filter((g,i)=> sector==='All' || sectorTypes[i]===sector);
+  });
+  multiChart.update();
+}
+
+// Heatmap Chart
+const ctxHeat = document.getElementById('heatmapChart').getContext('2d');
+const heatColors = risk.map(r=>r==='High'?'#ef5350':r==='Medium'?'#ffca28':'#66bb6a');
+const heatmapChart = new Chart(ctxHeat,{type:'bar',data:{labels:sectors,datasets:[{label:'Gross Margin (KES)', data:grossMargin, backgroundColor:heatColors}]},
+options:{responsive:true, plugins:{title:{display:true,text:'Profitability Heatmap'}, legend:{display:false}, tooltip:{callbacks:{label: ctx => `Gross Margin: ${ctx.raw} KES | Risk: ${risk[ctx.dataIndex]}`}}}, 
+plugins:[{id:'iconPlugin', afterDatasetsDraw(chart){
+  const ctx = chart.ctx;
+  chart.data.datasets.forEach((dataset,i)=>{
+    chart.getDatasetMeta(i).data.forEach((bar,index)=>{
+      const x = bar.x;
+      const y = bar.y - 10;
+      ctx.font = '16px serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(iconsMap[chart.data.labels[index]] || '', x, y);
+    });
+  });
+}}]}});
+function filterHeatmap(sector){
+  const buttons = document.querySelectorAll('#heatmapChart ~ .filter-buttons button');
+  buttons.forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  heatmapChart.data.labels = sectors.filter((s,i)=> sector==='All' || sectorTypes[i]===sector );
+  heatmapChart.data.datasets[0].data = grossMargin.filter((g,i)=> sector==='All' || sectorTypes[i]===sector);
+  heatmapChart.data.datasets[0].backgroundColor = risk.filter((r,i)=> sector==='All' || sectorTypes[i]===sector).map(r=>r==='High'?'#ef5350':r==='Medium'?'#ffca28':'#66bb6a');
+  heatmapChart.update();
+}
+
+// Trend Chart
+const monthlyLabels=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const trendData = {'Dairy Cattle':[45000,48000,52000,50000,48000,46000,47000,48000,49000,50000,52000,54000],
+'Goats':[8000,9000,12000,11000,10000,9500,10000,10500,11000,11500,12000,13000],
+'Pigs':[12000,13000,15000,16000,17000,18000,18500,19000,19500,20000,21000,22000],
+'Broilers':[15000,16000,18000,20000,22000,24000,26000,28000,30000,32000,35000,38000],
+'Layers':[20000,21000,22000,23000,24000,25000,26000,27000,28000,29000,30000,31000],
+'Tomatoes':[30000,50000,80000,100000,120000,130000,120000,110000,90000,70000,50000,40000],
+'Onions':[25000,30000,50000,70000,90000,100000,95000,85000,75000,65000,50000,40000],
+'Herbs':[15000,20000,45000,70000,90000,100000,105000,110000,115000,120000,125000,130000],
+'Spices':[18000,30000,60000,80000,95000,110000,115000,120000,125000,130000,140000,150000]};
+
+function getSectorAgg(){
+  const agg={Livestock:[],Poultry:[],Horticulture:[]};
+  for(let i=0;i<monthlyLabels.length;i++){
+    agg.Livestock[i]=trendData['Dairy Cattle'][i]+trendData['Goats'][i]+trendData['Pigs'][i];
+    agg.Poultry[i]=trendData['Broilers'][i]+trendData['Layers'][i];
+    agg.Horticulture[i]=trendData['Tomatoes'][i]+trendData['Onions'][i]+trendData['Herbs'][i]+trendData['Spices'][i];
+  }
+  return agg;
+}
+const sectorAgg=getSectorAgg();
+const ctxTrend=document.getElementById('trendChart').getContext('2d');
+let trendChart=new Chart(ctxTrend,{type:'line',data:{labels:monthlyLabels,datasets:Object.keys(sectorAgg).map((s,i)=>({label:s,data:sectorAgg[s],borderColor:trendColors[i],backgroundColor:trendColors[i]+'33',fill:true,tension:0.3}))},
+options:{responsive:true, plugins:{title:{display:true,text:'Monthly Revenue Trends (Stacked by Sector)'}}, interaction:{mode:'nearest', axis:'x', intersect:false}, scales:{y:{beginAtZero:true}},
+plugins:[{
+  id:'trendIconPlugin', afterDatasetsDraw(chart){
+    const ctx = chart.ctx;
+    chart.data.datasets.forEach((dataset,i)=>{
+      const meta = chart.getDatasetMeta(i);
+      meta.data.forEach((point,index)=>{
+        const x = point.x;
+        const y = point.y;
+        let iconLabel = dataset.label==='Livestock'?'🐄':dataset.label==='Poultry'?'🐔':'🍅';
+        ctx.font = '16px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(iconLabel, x, y-10);
+      });
+    });
+  }
+}]}});
+function filterTrend(sector){
+  const buttons = document.querySelectorAll('#trendChart ~ .filter-buttons button');
+  buttons.forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  const filteredKeys = Object.keys(sectorAgg).filter(s=> sector==='All' || s===sector);
+  trendChart.data.datasets = filteredKeys.map((s,i)=>({label:s,data:sectorAgg[s],borderColor:trendColors[i],backgroundColor:trendColors[i]+'33',fill:true,tension:0.3}));
+  trendChart.update();
+}
+
+function toggleNarr(id){document.getElementById(id).classList.toggle('hidden');}
+
+function downloadPDF(){
+  const { jsPDF } = window.jspdf;
+  html2canvas(document.querySelector('.container')).then(canvas=>{
+    const img=canvas.toDataURL('image/png');
+    const pdf=new jsPDF('p','pt','a4');
+    const width=pdf.internal.pageSize.getWidth();
+    const height=canvas.height*width/canvas.width;
+    pdf.addImage(img,'PNG',0,0,width,height);
+    pdf.save('Agribusiness_Portfolio.pdf');
+  });
+}
+</script>
+
+</body>
+</html>
