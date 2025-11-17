@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KIWASH & WASH Dashboard — Makueni County, Kenya (Nov 2025)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+  body {margin:0; font-family:'Segoe UI',Arial,sans-serif; background:#f0f7fa; color:#1e3a5f;}
+  header {background:#0b3d91; color:white; padding:20px; text-align:center;}
+  h1 {margin:0; font-size:2em;}
+  p {margin:10px 0 0;}
+  #map {height:560px; margin:20px auto; max-width:1300px; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.15);}
+  .dashboard {display:flex; flex-wrap:wrap; gap:25px; justify-content:center; padding:30px 20px; max-width:1400px; margin:0 auto;}
+  .chart-panel {background:white; border-radius:12px; padding:20px; box-shadow:0 6px 20px rgba(11,61,145,0.1); width:100%; max-width:420px;}
+  .narrative-panel {margin-top:15px; cursor:pointer; padding:12px; background:#e3f2fd; border-radius:8px; font-size:0.95em;}
+  .narrative-content {display:none; margin-top:10px; line-height:1.5;}
+  button {padding:12px 24px; background:#0b3d91; color:white; border:none; border-radius:8px; cursor:pointer; font-size:1em;}
+  button:hover {background:#094a7a;}
+  .leaflet-control-layers {border-radius:8px !important;}
+  #debug {position:fixed; top:10px; right:10px; background:rgba(0,0,0,0.8); color:white; padding:10px; border-radius:5px; font-size:12px; z-index:1000; display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>KIWASH & WASH Dashboard — Makueni County</h1>
+  <p>Water Sources │ Agricultural Projects │ WASH Interventions (November 2025)</p>
+  <button onclick="downloadPDF()">Download Dashboard as PDF</button>
+</header>
+
+<div id="map"></div>
+<div id="debug">Debug: Check console for details.</div>
+
+<div class="dashboard">
+  <div class="chart-panel">
+    <canvas id="categoryChart"></canvas>
+    <div class="narrative-panel" onclick="toggleNarrative('catN')">
+      <strong>Feature Distribution by Category</strong> (click to expand)
+      <div class="narrative-content" id="catN">
+        Water sources remain the backbone of rural livelihoods. Agricultural and WASH projects are strategically clustered around reliable water points.
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-panel">
+    <canvas id="statusChart"></canvas>
+    <div class="narrative-panel" onclick="toggleNarrative('statN')">
+      <strong>Operational Status Overview</strong> (click to expand)
+      <div class="narrative-content" id="statN">
+        Permanent sources provide year-round access, while seasonal and under-construction assets require targeted resilience programs.
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-panel">
+    <canvas id="typeChart"></canvas>
+    <div class="narrative-panel" onclick="toggleNarrative('typeN')">
+      <strong>Detailed Asset Types</strong> (click to expand)
+      <div class="narrative-content" id="typeN">
+        Boreholes and earth/sand dams dominate due to the semi-arid climate. Emerging large reservoirs (Thwake) will transform the landscape.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== COMPLETE VALIDATED GEOJSON (Nov 2025) ====================
+const geoData = {
+  "type": "FeatureCollection",
+  "name": "Makueni County WASH & Agriculture Assets",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  "features": [
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Athi River","type":"River","status":"Permanent"},"geometry":{"type":"LineString","coordinates":[[37.75,-1.9167],[37.95,-2.35],[38.1,-2.45]]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Thwake Multi-purpose Dam","type":"Reservoir","status":"Operational (Phase I)","source":"NEMA 2025"},"geometry":{"type":"Point","coordinates":[37.8039,-2.3561]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Kaiti River","type":"River","status":"Permanent"},"geometry":{"type":"Point","coordinates":[37.6333,-1.7833]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Kibwezi River","type":"River","status":"Semi-permanent"},"geometry":{"type":"Point","coordinates":[37.9628,-2.4125]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Muooni River","type":"River","status":"Semi-permanent"},"geometry":{"type":"Point","coordinates":[37.8167,-2.2833]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Kambu Earth Dam","type":"Earth Dam","status":"Permanent"},"geometry":{"type":"Point","coordinates":[37.5833,-1.8667]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Nthangu Earth Dam","type":"Earth Dam","status":"Permanent"},"geometry":{"type":"Point","coordinates":[37.7167,-2.0833]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Makindu Hospital Borehole","type":"Borehole","status":"Permanent"},"geometry":{"type":"Point","coordinates":[37.8256,-2.2794]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Wote Main Borehole","type":"Borehole","status":"Permanent"},"geometry":{"type":"Point","coordinates":[37.6283,-1.7819]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Kibwezi Level-5 Hospital Borehole","type":"Borehole","status":"Permanent"},"geometry":{"type":"Point","coordinates":[37.9639,-2.4139]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Emali Borehole Cluster","type":"Borehole","status":"Permanent"},"geometry":{"type":"Point","coordinates":[37.4667,-1.9833]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Kyusyani Water Pan","type":"Water Pan","status":"Seasonal"},"geometry":{"type":"Point","coordinates":[37.65,-1.9]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Makongo Pan","type":"Water Pan","status":"Seasonal"},"geometry":{"type":"Point","coordinates":[38.1167,-2.55]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Kasengela Sand Dam","type":"Sand Dam","status":"Permanent"},"geometry":{"type":"Point","coordinates":[37.95,-2.10]}},
+    {"type":"Feature","properties":{"category":"Water Sources","name":"Mbooni Hills Springs","type":"Spring","status":"Permanent"},"geometry":{"type":"Point","coordinates":[37.4667,-1.65]}},
+
+    {"type":"Feature","properties":{"category":"Agricultural Projects/Areas","name":"Makindu Grain Processing Plant","type":"Processing Facility","status":"Operational"},"geometry":{"type":"Point","coordinates":[37.8167,-2.2833]}},
+    {"type":"Feature","properties":{"category":"Agricultural Projects/Areas","name":"Kibwezi Drip Irrigation Scheme","type":"Irrigation Area","status":"Active"},"geometry":{"type":"Polygon","coordinates":[[[37.95,-2.40],[38.02,-2.40],[38.02,-2.46],[37.95,-2.46],[37.95,-2.40]]]}},
+    {"type":"Feature","properties":{"category":"Agricultural Projects/Areas","name":"Makueni Sunflower Belt","type":"Crop Area","status":"Active"},"geometry":{"type":"Polygon","coordinates":[[[37.55,-1.95],[37.85,-1.95],[37.85,-2.15],[37.55,-2.15],[37.55,-1.95]]]}},
+    {"type":"Feature","properties":{"category":"Agricultural Projects/Areas","name":"Thwake Irrigation Command Area (Planned)","type":"Irrigation Project","status":"Under Development"},"geometry":{"type":"Point","coordinates":[37.80,-2.35]}},
+    {"type":"Feature","properties":{"category":"Agricultural Projects/Areas","name":"Emali Mango Orchards","type":"Orchard","status":"Expanded 2025"},"geometry":{"type":"Polygon","coordinates":[[[37.45,-1.98],[37.52,-1.98],[37.52,-2.02],[37.45,-2.02],[37.45,-1.98]]]}},
+
+    {"type":"Feature","properties":{"category":"WASH Projects","name":"KIWASH Sanitation Hub – Wote","type":"Sanitation Center","status":"Operational"},"geometry":{"type":"Point","coordinates":[37.63,-1.78]}},
+    {"type":"Feature","properties":{"category":"WASH Projects","name":"Kibwezi ODF Certified Zone","type":"ODF Zone","status":"Verified 2024"},"geometry":{"type":"Polygon","coordinates":[[[37.94,-2.40],[38.01,-2.40],[38.01,-2.44],[37.94,-2.44],[37.94,-2.40]]]}},
+    {"type":"Feature","properties":{"category":"WASH Projects","name":"Mifuko Trust Eco-Toilets – Kasengela","type":"Ecological Toilet","status":"Operational"},"geometry":{"type":"Point","coordinates":[37.95,-2.10]}},
+    {"type":"Feature","properties":{"category":"WASH Projects","name":"World Vision Hygiene Training – Mbooni","type":"Training Site","status":"Ongoing"},"geometry":{"type":"Point","coordinates":[37.48,-1.67]}}
+  ]
+};
+
+console.log('GeoJSON loaded:', geoData.features.length, 'features'); // Debug log
+
+// ==================== MAP INITIALIZATION ====================
+let map;
+try {
+  map = L.map('map').setView([-1.85, 37.75], 10);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 18
+  }).addTo(map);
+  console.log('Map initialized successfully'); // Debug
+} catch (e) {
+  console.error('Map error:', e);
+  document.getElementById('debug').style.display = 'block';
+  document.getElementById('debug').innerText = 'Map load error: ' + e.message;
+}
+
+// Custom type colors
+const typeIcon = (type) => {
+  const colors = {
+    'River':'#2196f3','Reservoir':'#1976d2','Borehole':'#4caf50','Earth Dam':'#8d6e63','Sand Dam':'#6d4c41',
+    'Water Pan':'#5e35b1','Spring':'#00bfa5','Irrigation Area':'#ff5722','Processing Facility':'#e65100',
+    'Crop Area':'#9ccc65','Orchard':'#7cb342','Irrigation Project':'#00c853','Sanitation Center':'#c62828',
+    'ODF Zone':'#d50000','Ecological Toilet':'#8e24aa','Training Site':'#3949ab'
+  };
+  return colors[type] || '#555';
+};
+
+// Layer groups
+const layerGroups = {
+  'Water Sources': L.layerGroup(),
+  'Agricultural Projects/Areas': L.layerGroup(),
+  'WASH Projects': L.layerGroup()
+};
+Object.values(layerGroups).forEach(group => group.addTo(map));
+
+// Add features with error handling
+geoData.features.forEach((f, index) => {
+  try {
+    const props = f.properties;
+    let layer;
+
+    if (f.geometry.type === 'Point') {
+      const [lng, lat] = f.geometry.coordinates;
+      layer = L.circleMarker([lat, lng], {
+        radius: 8,
+        fillColor: typeIcon(props.type),
+        color: '#fff',
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.85
+      }).bindPopup(`
+        <b>${props.name}</b><br>
+        Category: ${props.category}<br>
+        Type: ${props.type}<br>
+        Status: ${props.status || 'N/A'}
+      `);
+    } else if (f.geometry.type === 'LineString') {
+      const coords = f.geometry.coordinates.map(c => [c[1], c[0]]);
+      layer = L.polyline(coords, {color: '#1976d2', weight: 4, opacity: 0.8})
+        .bindPopup(`<b>${props.name}</b> (${props.type})`);
+    } else if (f.geometry.type === 'Polygon') {
+      const coords = f.geometry.coordinates[0].map(c => [c[1], c[0]]);
+      layer = L.polygon(coords, {color: typeIcon(props.type), weight: 3, fillOpacity: 0.25})
+        .bindPopup(`<b>${props.name}</b><br>${props.type} – ${props.status || 'N/A'}`);
+    }
+
+    if (layer) {
+      layerGroups[props.category].addLayer(layer);
+      console.log(`Added feature ${index + 1}: ${props.name}`); // Debug
+    }
+  } catch (e) {
+    console.error(`Error adding feature ${index}:`, e);
+  }
+});
+
+// Layer control
+const overlayLayers = {
+  'Water Sources': layerGroups['Water Sources'],
+  'Agricultural Projects/Areas': layerGroups['Agricultural Projects/Areas'],
+  'WASH Projects': layerGroups['WASH Projects']
+};
+L.control.layers(null, overlayLayers, {collapsed: false, position: 'topright'}).addTo(map);
+
+// ==================== RISK HEATMAP (Water Sources only) ====================
+const heatPoints = geoData.features
+  .filter(f => f.properties.category === 'Water Sources' && f.geometry.type === 'Point')
+  .map(f => {
+    const risk = f.properties.status.includes('Seasonal') || f.properties.status.includes('Under') ? 4 : 1.5;
+    const [lng, lat] = f.geometry.coordinates;
+    return [lat, lng, risk];
+  });
+if (heatPoints.length > 0) {
+  L.heatLayer(heatPoints, {radius: 30, blur: 20, maxZoom: 15, gradient: {0.4: '#1a9850', 0.65: '#ffd700', 1: '#d73027'}}).addTo(map);
+  console.log('Heatmap added:', heatPoints.length, 'points');
+}
+
+// ==================== CHARTS ====================
+const catCount = {}, statusCount = {}, typeCount = {};
+geoData.features.forEach(f => {
+  catCount[f.properties.category] = (catCount[f.properties.category] || 0) + 1;
+  statusCount[f.properties.status] = (statusCount[f.properties.status] || 0) + 1;
+  typeCount[f.properties.type] = (typeCount[f.properties.type] || 0) + 1;
+});
+
+try {
+  new Chart(document.getElementById('categoryChart'), {
+    type: 'doughnut',
+    data: {labels: Object.keys(catCount), datasets: [{data: Object.values(catCount), backgroundColor: ['#0066cc','#ff9800','#d81b60']}]},
+    options: {plugins: {title: {display: true, text: 'Features by Category', font: {size: 16}}}}
+  });
+  new Chart(document.getElementById('statusChart'), {
+    type: 'bar',
+    data: {labels: Object.keys(statusCount), datasets: [{label: 'Count', data: Object.values(statusCount), backgroundColor: '#0066cc'}]},
+    options: {plugins: {title: {display: true, text: 'Status Distribution', font: {size: 16}}}, scales: {y: {beginAtZero: true}}}
+  });
+  new Chart(document.getElementById('typeChart'), {
+    type: 'bar',
+    data: {labels: Object.keys(typeCount), datasets: [{label: 'Asset Types', data: Object.values(typeCount), backgroundColor: '#ff9800'}]},
+    options: {plugins: {title: {display: true, text: 'Detailed Asset Types', font: {size: 16}}}, scales: {y: {beginAtZero: true}}, indexAxis: 'y'}
+  });
+  console.log('Charts rendered');
+} catch (e) {
+  console.error('Chart error:', e);
+}
+
+// ==================== UTILITIES ====================
+function toggleNarrative(id) {
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+
+function downloadPDF() {
+  html2canvas(document.body, {scale: 2}).then(canvas => {
+    const img = canvas.toDataURL('image/png');
+    const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+    const width = pdf.internal.pageSize.getWidth();
+    const height = (canvas.height * width) / canvas.width;
+    pdf.addImage(img, 'PNG', 0, 0, width, height);
+    pdf.save('Makueni_KIWASH_WASH_Dashboard_Nov2025.pdf');
+  }).catch(e => console.error('PDF error:', e));
+}
+
+// Fit map to data bounds
+try {
+  const bounds = [];
+  geoData.features.forEach(f => {
+    if (f.geometry.type === 'Point') {
+      const [lng, lat] = f.geometry.coordinates;
+      bounds.push([lat, lng]);
+    } else if (f.geometry.type === 'LineString' || (f.geometry.type === 'Polygon' && f.geometry.coordinates[0])) {
+      f.geometry.coordinates[0].forEach(c => bounds.push([c[1], c[0]]));
+    }
+  });
+  if (bounds.length > 0) {
+    map.fitBounds(L.latLngBounds(bounds).pad(0.15));
+    console.log('Map fitted to bounds');
+  }
+} catch (e) {
+  console.error('Bounds error:', e);
+}
+
+console.log('Dashboard fully loaded!'); // Final debug
+</script>
+</body>
+</html>
