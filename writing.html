@@ -41,13 +41,29 @@
   <section class="list">
     <!-- Analytical Brief with dashboard link -->
     <article class="doc">
-      <h3 style="margin:0">Analytical Brief — Agribusiness Profitability (Kenya)</h3>
-      <div class="meta">Executive summary • Multi-sector charts • Heatmap • Trend analysis</div>
-      <a class="view" href="agribusinessportfolio.html" target="_blank" rel="noopener">
-        <img src="assets/images/chart-thumbnail.jpg" alt="Preview Chart">
-        View Sample Dashboard
-      </a>
-    </article>
+  <h3 style="margin:0">Analytical Brief — Agribusiness Profitability (Kenya)</h3>
+  <div class="meta">Executive summary • Multi-sector charts • Heatmap • Trend analysis</div>
+  <a class="view" href="assets/Agribusiness_Portfolio.html" target="_blank" rel="noopener">
+    <img id="dashboardThumbnail" src="assets/images/chart-thumbnail.png" alt="Preview Chart">
+    View Sample Dashboard
+  </a>
+</article>
+
+<script>
+// Dynamically check if thumbnail exists
+fetch('assets/images/chart-thumbnail.png', {method: 'HEAD'})
+  .then(res => {
+    if (!res.ok) {
+      // If thumbnail doesn't exist, use a default placeholder or fetch from dashboard page
+      document.getElementById('dashboardThumbnail').src = 'assets/images/chart-placeholder.png';
+    }
+  })
+  .catch(err => {
+    console.warn('Thumbnail check failed, using placeholder.', err);
+    document.getElementById('dashboardThumbnail').src = 'assets/images/chart-placeholder.png';
+  });
+</script>
+
 
     <!-- Placeholder for KIWASH -->
     <article class="doc">
