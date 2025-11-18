@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Data Annotation for COVID-19 Research | Mwanza Wambua</title>
+    <style>
+        :root {
+            --accent: #0b3d91;
+            --accent-light: rgba(11, 61, 145, 0.1);
+            --muted: #6b7280;
+            --card: #fff;
+            --bg: #f6fbff;
+            --radius: 12px;
+            --max: 1100px;
+            --shadow-sm: 0 2px 8px rgba(11, 61, 145, 0.04);
+            --shadow-md: 0 6px 20px rgba(11, 61, 145, 0.08);
+            --shadow-lg: 0 18px 40px rgba(11, 61, 145, 0.12);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: #102a43;
+            line-height: 1.6;
+        }
+        
+        .wrap {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 28px;
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            margin-bottom: 20px;
+        }
+        
+        .brand {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .brand img {
+            width: 56px;
+            height: 56px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        
+        nav a {
+            margin-left: 16px;
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        .project-header {
+            background: linear-gradient(135deg, #0b3d91, #1e5bc9);
+            color: white;
+            padding: 60px 0;
+            border-radius: var(--radius);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .project-tag {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .project-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .project-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .project-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+        
+        .project-details {
+            background: var(--card);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .project-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .info-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        h2 {
+            color: var(--accent);
+            margin: 30px 0 15px;
+        }
+        
+        h3 {
+            margin: 20px 0 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .annotation-example {
+            background: #f8fafc;
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .stat-card {
+            background: var(--accent-light);
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #0a3275;
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            margin-top: 60px;
+            padding: 22px 0;
+            color: var(--muted);
+            font-size: 14px;
+            text-align: center;
+            border-top: 1px solid rgba(11, 61, 145, 0.08);
+        }
+        
+        @media (max-width: 900px) {
+            .project-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .wrap {
+                padding: 20px;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            .project-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="brand">
+                <img src="assets/images/CV.JPG" alt="Mwanza Wambua">
+                <div>
+                    <h1>Mwanza Wambua</h1>
+                    <div style="color:var(--muted);font-size:13px">Data Scientist · AI Data Specialist</div>
+                </div>
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="projects.html">Projects</a>
+                <a href="resume.html">Resume</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </header>
+        
+        <div class="project-header">
+            <div class="project-tag">AI & Machine Learning</div>
+            <h1>AI Data Annotation for COVID-19 Research</h1>
+            <p>Creating high-quality training datasets for machine learning models analyzing COVID-19 medical literature and public health data</p>
+        </div>
+        
+        <div class="project-content">
+            <div class="project-details">
+                <h2>Project Overview</h2>
+                <p>Led a data annotation initiative to create structured training datasets from COVID-19 research papers, clinical notes, and public health reports. The annotated data was used to train machine learning models for identifying treatment patterns, predicting outbreak trends, and extracting key insights from scientific literature.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">15K+</div>
+                        <div class="stat-label">Documents Annotated</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">Annotation Accuracy</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">ML Models Trained</div>
+                    </div>
+                </div>
+                
+                <h2>Challenge</h2>
+                <p>The COVID-19 pandemic generated an unprecedented volume of research and data, creating challenges for researchers and public health officials:</p>
+                <ul>
+                    <li>Overwhelming volume of COVID-19 research papers published daily</li>
+                    <li>Lack of structured data for training AI models to analyze medical literature</li>
+                    <li>Inconsistent terminology and reporting formats across different sources</li>
+                    <li>Difficulty extracting actionable insights from unstructured clinical notes</li>
+                </ul>
+                
+                <h2>Solution</h2>
+                <p>I designed and implemented a comprehensive data annotation framework that included:</p>
+                <ul>
+                    <li>Development of detailed annotation guidelines for medical text</li>
+                    <li>Creation of a specialized annotation tool for domain experts</li>
+                    <li>Quality assurance workflows to ensure annotation consistency</li>
+                    <li>Training and management of annotation teams</li>
+                    <li>Integration with ML pipelines for model training and evaluation</li>
+                </ul>
+                
+                <h2>Annotation Framework</h2>
+                <p>The annotation process focused on several key areas of COVID-19 research:</p>
+                
+                <h3>Entity Recognition</h3>
+                <p>Identifying and categorizing key entities in medical text:</p>
+                <div class="annotation-example">
+                    <p><strong>Example:</strong> "Patients with <mark style="background: #ffeb3b">severe COVID-19</mark> showed elevated levels of <mark style="background: #a5d6a7">IL-6</mark> and were treated with <mark style="background: #90caf9">dexamethasone</mark>."</p>
+                    <p><small>Disease: yellow | Biomarker: green | Treatment: blue</small></p>
+                </div>
+                
+                <h3>Relationship Extraction</h3>
+                <p>Identifying connections between entities in research findings:</p>
+                <div class="annotation-example">
+                    <p><strong>Example:</strong> "<mark style="background: #ffeb3b">Remdesivir</mark> was associated with <mark style="background: #ce93d8">reduced recovery time</mark> in hospitalized patients."</p>
+                    <p><small>Drug: yellow | Outcome: purple | Relationship: POSITIVE</small></p>
+                </div>
+                
+                <h3>Evidence Quality Assessment</h3>
+                <p>Classifying the strength of evidence in research findings:</p>
+                <div class="annotation-example">
+                    <p><strong>Example:</strong> "In a <mark style="background: #81c784">randomized controlled trial</mark> of 1,000 patients, the vaccine demonstrated <mark style="background: #4db6ac">95% efficacy</mark>."</p>
+                    <p><small>Study Type: green | Finding: teal | Evidence Level: HIGH</small></p>
+                </div>
+                
+                <h2>Technical Implementation</h2>
+                <p>The annotation system was built with scalability and quality control in mind:</p>
+                <ul>
+                    <li><strong>Annotation Platform:</strong> Custom web application with React frontend</li>
+                    <li><strong>Backend:</strong> Python with Flask API and PostgreSQL database</li>
+                    <li><strong>Quality Control:</strong> Inter-annotator agreement metrics and expert review</li>
+                    <li><strong>ML Integration:</strong> Export to formats compatible with popular ML frameworks</li>
+                    <li><strong>Version Control:</strong> Git for tracking annotation guideline changes</li>
+                </ul>
+                
+                <h2>Impact & Results</h2>
+                <p>The annotated datasets enabled significant advancements in COVID-19 research:</p>
+                <ul>
+                    <li>Trained models achieved 92% accuracy in extracting treatment patterns from clinical notes</li>
+                    <li>Reduced time for literature review by 75% through automated insight extraction</li>
+                    <li>Enabled real-time monitoring of emerging treatment protocols</li>
+                    <li>Supported public health decision-making with data-driven insights</li>
+                    <li>Created reusable annotation framework for future pandemic response</li>
+                </ul>
+                
+                <a href="projects.html" class="btn">Back to Projects</a>
+            </div>
+            
+            <div class="project-sidebar">
+                <div class="info-card">
+                    <h3>Project Details</h3>
+                    <p><strong>Client:</strong> Research Consortium & Public Health Institute</p>
+                    <p><strong>Duration:</strong> 11 months</p>
+                    <p><strong>Team Size:</strong> 12 annotators + 3 data scientists</p>
+                    <p><strong>My Role:</strong> Annotation Lead & Data Strategist</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Technologies Used</h3>
+                    <ul style="margin-left: 0; list-style: none;">
+                        <li>• Python (spaCy, NLTK)</li>
+                        <li>• React.js</li>
+                        <li>• PostgreSQL</li>
+                        <li>• Docker</li>
+                        <li>• Git & GitHub</li>
+                        <li>• AWS S3 & EC2</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Annotation Types</h3>
+                    <ul style="margin-left: 0; list-style: none;">
+                        <li>• Named Entity Recognition</li>
+                        <li>• Relationship Extraction</li>
+                        <li>• Text Classification</li>
+                        <li>• Sentiment Analysis</li>
+                        <li>• Evidence Grading</li>
+                        <li>• Quality Assessment</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Data Sources</h3>
+                    <ul style="margin-left: 0; list-style: none;">
+                        <li>• PubMed COVID-19 Papers</li>
+                        <li>• Clinical Trial Records</li>
+                        <li>• Public Health Reports</li>
+                        <li>• Social Media (monitoring)</li>
+                        <li>• News Articles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="wrap">© 2025 Mwanza Wambua — Makueni, Kenya • English (C2) • Swahili (C1)</div>
+    </footer>
+</body>
+</html>
