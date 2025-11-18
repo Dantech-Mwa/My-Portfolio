@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI COVID-19 Dashboards | Mwanza Wambua</title>
+    <style>
+        :root {
+            --accent: #0b3d91;
+            --accent-light: rgba(11, 61, 145, 0.1);
+            --muted: #6b7280;
+            --card: #fff;
+            --bg: #f6fbff;
+            --radius: 12px;
+            --max: 1100px;
+            --shadow-sm: 0 2px 8px rgba(11, 61, 145, 0.04);
+            --shadow-md: 0 6px 20px rgba(11, 61, 145, 0.08);
+            --shadow-lg: 0 18px 40px rgba(11, 61, 145, 0.12);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: #102a43;
+            line-height: 1.6;
+        }
+        
+        .wrap {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 28px;
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            margin-bottom: 20px;
+        }
+        
+        .brand {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .brand img {
+            width: 56px;
+            height: 56px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        
+        nav a {
+            margin-left: 16px;
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        .project-header {
+            background: linear-gradient(135deg, #0b3d91, #1e5bc9);
+            color: white;
+            padding: 60px 0;
+            border-radius: var(--radius);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .project-tag {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .project-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .project-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .project-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+        
+        .project-details {
+            background: var(--card);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .project-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .info-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        h2 {
+            color: var(--accent);
+            margin: 30px 0 15px;
+        }
+        
+        h3 {
+            margin: 20px 0 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .dashboard-preview {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .dashboard-preview img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .stat-card {
+            background: var(--accent-light);
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #0a3275;
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            margin-top: 60px;
+            padding: 22px 0;
+            color: var(--muted);
+            font-size: 14px;
+            text-align: center;
+            border-top: 1px solid rgba(11, 61, 145, 0.08);
+        }
+        
+        @media (max-width: 900px) {
+            .project-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .wrap {
+                padding: 20px;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            .project-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="brand">
+                <img src="assets/images/CV.JPG" alt="Mwanza Wambua">
+                <div>
+                    <h1>Mwanza Wambua</h1>
+                    <div style="color:var(--muted);font-size:13px">Data Scientist · Data Visualization Specialist</div>
+                </div>
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="projects.html">Projects</a>
+                <a href="resume.html">Resume</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </header>
+        
+        <div class="project-header">
+            <div class="project-tag">Data Visualization & Analytics</div>
+            <h1>Power BI COVID-19 Dashboard Suite</h1>
+            <p>Interactive dashboards providing real-time insights into pandemic trends, healthcare capacity, and vaccination progress</p>
+        </div>
+        
+        <div class="project-content">
+            <div class="project-details">
+                <h2>Project Overview</h2>
+                <p>Designed and developed a comprehensive suite of Power BI dashboards to support public health decision-making during the COVID-19 pandemic. The dashboards integrated data from multiple sources to provide actionable insights for healthcare administrators, policymakers, and the general public.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Interactive Dashboards</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">2.5M+</div>
+                        <div class="stat-label">Daily Views</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">15+</div>
+                        <div class="stat-label">Data Sources</div>
+                    </div>
+                </div>
+                
+                <h2>Challenge</h2>
+                <p>During the COVID-19 crisis, decision-makers faced several data visualization challenges:</p>
+                <ul>
+                    <li>Fragmented data across multiple systems and jurisdictions</li>
+                    <li>Difficulty understanding complex pandemic trends from raw numbers</li>
+                    <li>Need for real-time updates to support rapid decision-making</li>
+                    <li>Varying technical expertise among dashboard users</li>
+                    <li>Ensuring data accuracy and consistency across visualizations</li>
+                </ul>
+                
+                <h2>Solution</h2>
+                <p>I created a multi-tiered dashboard ecosystem that served different user needs:</p>
+                
+                <h3>Public Facing Dashboard</h3>
+                <p>Simple, accessible visualizations for the general public:</p>
+                <div class="dashboard-preview">
+                    <p><strong>Public Health Overview Dashboard</strong></p>
+                    <p><em>Dashboard visualization would appear here</em></p>
+                    <ul style="text-align: left; display: inline-block;">
+                        <li>Case trends with 7-day averages</li>
+                        <li>Vaccination progress by region</li>
+                        <li>Hospital capacity indicators</li>
+                        <li>Testing positivity rates</li>
+                    </ul>
+                </div>
+                
+                <h3>Healthcare Administration Dashboard</h3>
+                <p>Detailed operational insights for healthcare managers:</p>
+                <div class="dashboard-preview">
+                    <p><strong>Healthcare Operations Dashboard</strong></p>
+                    <p><em>Dashboard visualization would appear here</em></p>
+                    <ul style="text-align: left; display: inline-block;">
+                        <li>Bed occupancy and ICU capacity</li>
+                        <li>Staffing levels and availability</li>
+                        <li>Medical supply inventory</li>
+                        <li>Patient flow and throughput</li>
+                    </ul>
+                </div>
+                
+                <h3>Epidemiological Analysis Dashboard</h3>
+                <p>Advanced analytics for public health experts:</p>
+                <div class="dashboard-preview">
+                    <p><strong>Epidemiological Insights Dashboard</strong></p>
+                    <p><em>Dashboard visualization would appear here</em></p>
+                    <ul style="text-align: left; display: inline-block;">
+                        <li>Transmission rate (R0) calculations</li>
+                        <li>Variant tracking and impact analysis</li>
+                        <li>Geospatial hotspot identification</li>
+                        <li>Forecasting and scenario modeling</li>
+                    </ul>
+                </div>
+                
+                <h2>Technical Implementation</h2>
+                <p>The dashboard suite was built with a focus on performance, accuracy, and user experience:</p>
+                <ul>
+                    <li><strong>Data Integration:</strong> Power Query for ETL from multiple sources (APIs, databases, flat files)</li>
+                    <li><strong>Data Model:</strong> Star schema design for optimal performance</li>
+                    <li><strong>Visualizations:</strong> Custom DAX measures for complex calculations</li>
+                    <li><strong>Deployment:</strong> Power BI Service for cloud hosting and automatic refresh</li>
+                    <li><strong>Security:</strong> Row-level security for sensitive data protection</li>
+                    <li><strong>Automation:</strong> Scheduled data refresh and alert mechanisms</li>
+                </ul>
+                
+                <h2>Key Features</h2>
+                <p>The dashboards included several innovative features that enhanced their utility:</p>
+                <ul>
+                    <li><strong>Drill-through Capabilities:</strong> Users could click on summary visualizations to see detailed underlying data</li>
+                    <li><strong>What-If Analysis:</strong> Interactive parameters allowing users to model different scenarios</li>
+                    <li><strong>Mobile Optimization:</strong> Responsive design ensuring usability on all devices</li>
+                    <li><strong>Export Functionality:</strong> One-click export of data and visualizations for reporting</li>
+                    <li><strong>Alert System:</strong> Automated notifications when key metrics exceeded thresholds</li>
+                </ul>
+                
+                <h2>Impact & Results</h2>
+                <p>The dashboard suite transformed how organizations responded to the pandemic:</p>
+                <ul>
+                    <li>Reduced time to identify emerging hotspots from days to hours</li>
+                    <li>Enabled data-driven allocation of limited healthcare resources</li>
+                    <li>Improved public understanding of pandemic trends through accessible visualizations</li>
+                    <li>Supported vaccination campaign planning with real-time coverage data</li>
+                    <li>Facilitated cross-agency collaboration through shared data insights</li>
+                    <li>Received recognition from health authorities for clarity and usefulness</li>
+                </ul>
+                
+                <a href="projects.html" class="btn">Back to Projects</a>
+            </div>
+            
+            <div class="project-sidebar">
+                <div class="info-card">
+                    <h3>Project Details</h3>
+                    <p><strong>Client:</strong> National Health Department & Regional Authorities</p>
+                    <p><strong>Duration:</strong> 8 months (ongoing maintenance)</p>
+                    <p><strong>Team Size:</strong> 4 person dashboard team</p>
+                    <p><strong>My Role:</strong> Lead Dashboard Developer</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Technologies Used</h3>
+                    <ul style="margin-left: 0; list-style: none;">
+                        <li>• Power BI Desktop & Service</li>
+                        <li>• Power Query (M Language)</li>
+                        <li>• DAX (Data Analysis Expressions)</li>
+                        <li>• SQL Server</li>
+                        <li>• REST APIs</li>
+                        <li>• Azure Data Factory</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Data Sources</h3>
+                    <ul style="margin-left: 0; list-style: none;">
+                        <li>• National Health Database</li>
+                        <li>• Laboratory Testing Systems</li>
+                        <li>• Vaccination Registries</li>
+                        <li>• Hospital Admission Systems</li>
+                        <li>• Public Health APIs</li>
+                        <li>• Mobile Survey Data</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Key Metrics Tracked</h3>
+                    <ul style="margin-left: 0; list-style: none;">
+                        <li>• Case Incidence & Prevalence</li>
+                        <li>• Test Positivity Rates</li>
+                        <li>• Vaccination Coverage</li>
+                        <li>• Hospitalization Rates</li>
+                        <li>• Mortality Statistics</li>
+                        <li>• Healthcare Capacity</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="wrap">© 2025 Mwanza Wambua — Makueni, Kenya • English (C2) • Swahili (C1)</div>
+    </footer>
+</body>
+</html>
