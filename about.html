@@ -3,77 +3,397 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>About — Mwanza Wambua</title>
+<title>About — Mwanza Wambua | Data Scientist & MERL Specialist</title>
+<meta name="description" content="Professional profile of Mwanza Wambua - Data Scientist with 5+ years experience in data analytics, MERL frameworks, and sustainable development initiatives.">
 
 <style>
-  :root{--accent:#0b3d91;--muted:#6b7280;--bg:#fbfdff;--card:#fff;--radius:12px;--max:1100px}
-  *{box-sizing:border-box}
-  body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:#102a43}
-  .wrap{max-width:var(--max);margin:0 auto;padding:28px}
-  header{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
-  .brand{display:flex;gap:14px;align-items:center}
-  .logo{width:64px;height:64px;border-radius:12px;overflow:hidden}
-  nav a{margin-left:14px;color:var(--muted);text-decoration:none}
-  .content{display:grid;grid-template-columns:320px 1fr;gap:28px;padding:28px 0}
-  .card{background:var(--card);padding:20px;border-radius:var(--radius);box-shadow:0 10px 30px rgba(11,61,145,0.04)}
-  .profile-pic{width:100%;border-radius:8px}
-  h2{color:var(--accent);margin-top:0}
-  ul{color:var(--muted)}
-  @media(max-width:880px){.content{grid-template-columns:1fr}nav{display:none}}
+  :root{
+    --accent:#0b3d91;
+    --accent-light:rgba(11,61,145,0.1);
+    --muted:#6b7280;
+    --muted-light:rgba(107,114,128,0.08);
+    --bg:#fbfdff;
+    --card:#fff;
+    --radius:12px;
+    --max:1100px;
+    --shadow-sm: 0 2px 8px rgba(11,61,145,0.04);
+    --shadow-md: 0 6px 20px rgba(11,61,145,0.08);
+  }
+  
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{font-family:Inter,system-ui,Arial,sans-serif; margin:0; background:var(--bg); color:#102a43; line-height:1.6}
+  .wrap{max-width:var(--max); margin:0 auto; padding:28px}
+  
+  /* Header */
+  header{display:flex; align-items:center; justify-content:space-between; padding:12px 0; position:relative}
+  .brand{display:flex; gap:14px; align-items:center}
+  .logo{width:64px; height:64px; border-radius:12px; overflow:hidden; box-shadow:0 4px 12px rgba(11,61,145,0.1)}
+  .logo img{width:100%; height:100%; object-fit:cover}
+  nav{display:flex; gap:16px}
+  nav a{color:var(--muted); text-decoration:none; font-weight:600; transition:color 0.2s ease}
+  nav a:hover{color:var(--accent)}
+  
+  /* Mobile Navigation */
+  .mobile-menu-btn{display:none; background:none; border:none; cursor:pointer; width:24px; height:24px; position:relative}
+  .mobile-menu-btn span{display:block; width:100%; height:2px; background:var(--accent); transition:all 0.3s ease; position:absolute}
+  .mobile-menu-btn span:nth-child(1){top:0}
+  .mobile-menu-btn span:nth-child(2){top:50%; transform:translateY(-50%)}
+  .mobile-menu-btn span:nth-child(3){bottom:0}
+  .mobile-menu-btn.active span:nth-child(1){top:50%; transform:translateY(-50%) rotate(45deg)}
+  .mobile-menu-btn.active span:nth-child(2){opacity:0}
+  .mobile-menu-btn.active span:nth-child(3){bottom:50%; transform:translateY(50%) rotate(-45deg)}
+  
+  .mobile-nav{display:none; position:absolute; top:100%; left:0; right:0; background:var(--card); box-shadow:var(--shadow-md); border-radius:var(--radius); padding:16px; z-index:100}
+  .mobile-nav.active{display:block}
+  .mobile-nav a{display:block; padding:12px 0; border-bottom:1px solid rgba(11,61,145,0.08); text-decoration:none; color:var(--muted); font-weight:600}
+  .mobile-nav a:last-child{border-bottom:none}
+  
+  /* Main Content */
+  .page-header{margin:36px 0 28px}
+  h1{color:var(--accent); font-size:clamp(28px, 4vw, 36px); margin-bottom:8px}
+  .page-subtitle{color:var(--muted); font-size:18px; max-width:600px}
+  
+  .content{display:grid; grid-template-columns:320px 1fr; gap:32px; padding:28px 0}
+  
+  /* Sidebar */
+  .sidebar-card{background:var(--card); padding:24px; border-radius:var(--radius); box-shadow:var(--shadow-sm)}
+  .profile-pic{width:100%; border-radius:8px; margin-bottom:20px}
+  .contact-info{margin-bottom:24px}
+  .contact-info h3{color:var(--accent); margin-bottom:12px; font-size:16px}
+  .contact-info p{margin:8px 0; color:var(--muted)}
+  .skills-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px}
+  .skill-tag{background:var(--accent-light); color:var(--accent); padding:6px 10px; border-radius:6px; font-size:12px; font-weight:600; text-align:center}
+  
+  /* Main Content */
+  .main-card{background:var(--card); padding:32px; border-radius:var(--radius); box-shadow:var(--shadow-sm)}
+  h2{color:var(--accent); margin:32px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--accent-light)}
+  h2:first-child{margin-top:0}
+  h3{color:#1e293b; margin:24px 0 12px; font-size:18px}
+  
+  p{margin-bottom:16px; color:#374151}
+  ul{margin-left:20px; margin-bottom:20px}
+  li{margin-bottom:8px; color:#4b5563}
+  
+  .experience-item{margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid var(--muted-light)}
+  .experience-item:last-child{border-bottom:none}
+  .experience-header{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px}
+  .experience-title{font-weight:700; color:#1e293b}
+  .experience-company{color:var(--accent); font-weight:600}
+  .experience-date{color:var(--muted); font-size:14px; white-space:nowrap}
+  
+  .education-item{margin-bottom:20px}
+  .education-header{display:flex; justify-content:space-between; margin-bottom:4px}
+  .education-degree{font-weight:600; color:#1e293b}
+  .education-date{color:var(--muted)}
+  .education-institution{color:var(--accent)}
+  
+  .competency-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:16px; margin:20px 0}
+  .competency-category{background:var(--muted-light); padding:16px; border-radius:var(--radius)}
+  .competency-category h4{color:var(--accent); margin-bottom:12px; font-size:16px}
+  .competency-category ul{margin:0; list-style:none}
+  .competency-category li{margin-bottom:6px; padding-left:16px; position:relative}
+  .competency-category li:before{content:"•"; color:var(--accent); position:absolute; left:0}
+  
+  footer{margin-top:60px; padding:22px 0; color:var(--muted); font-size:14px; text-align:center; border-top:1px solid rgba(11,61,145,0.08)}
+  
+  @media(max-width:900px){
+    .content{grid-template-columns:1fr}
+    .desktop-nav{display:none}
+    .mobile-menu-btn{display:block}
+    .skills-grid{grid-template-columns:repeat(3, 1fr)}
+  }
+  
+  @media(max-width:600px){
+    .wrap{padding:20px}
+    .experience-header{flex-direction:column}
+    .experience-date{margin-top:4px}
+    .education-header{flex-direction:column}
+    .skills-grid{grid-template-columns:repeat(2, 1fr)}
+    .competency-grid{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
 <header class="wrap">
   <div class="brand">
-    <div class="logo"><img src="assets/images/CV.jpg" alt="Headshot"></div>
+    <div class="logo"><img src="assets/images/CV.jpg" alt="Mwanza Wambua professional headshot"></div>
     <div>
-      <h1 style="margin:0">Mwanza Wambua</h1>
-      <div style="color:var(--muted)">Data Scientist · MERL Specialist</div>
+      <h1 style="margin:0; font-size:18px">Mwanza Wambua</h1>
+      <div style="color:var(--muted); font-size:13px">Data Scientist · MERL Specialist · AI Data & Annotation</div>
     </div>
   </div>
-  <nav>
+  
+  <nav class="desktop-nav">
     <a href="index.html">Home</a>
+    <a href="about.html">About</a>
     <a href="projects.html">Work</a>
+    <a href="writing.html">Writing</a>
+    <a href="resume.html">Resume</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  
+  <button class="mobile-menu-btn" aria-label="Toggle mobile menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Work</a>
+    <a href="writing.html">Writing</a>
     <a href="resume.html">Resume</a>
     <a href="contact.html">Contact</a>
   </nav>
 </header>
 
 <main class="wrap">
+  <div class="page-header">
+    <h1>Professional Profile</h1>
+    <p class="page-subtitle">Data Scientist with 5+ years experience in data analytics, MERL frameworks, and sustainable development initiatives</p>
+  </div>
+
   <section class="content">
-    <aside class="card" aria-labelledby="profile">
-      <img class="profile-pic" src="assets/images/CV.jpg" alt="Headshot">
-      <div style="margin-top:14px">
-        <strong>Quick facts</strong>
-        <ul>
-          <li>Location: Makueni, Kenya</li>
-          <li>Email: wambuamwanza6@gmail.com</li>
-          <li>Languages: English (C2), Swahili (C1)</li>
-        </ul>
+    <aside class="sidebar-card" aria-labelledby="profile-sidebar">
+      <img class="profile-pic" src="assets/images/CV.jpg" alt="Mwanza Wambua professional headshot">
+      
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+        <p><strong>Location:</strong> Makueni, Kenya</p>
+        <p><strong>Email:</strong> wambuamwanza6@gmail.com</p>
+        <p><strong>Phone:</strong> +254 720 208150</p>
+        
+        <h3 style="margin-top:20px">Languages</h3>
+        <p><strong>English:</strong> C2 Proficient</p>
+        <p><strong>Swahili:</strong> C1 Advanced</p>
+      </div>
+      
+      <div class="contact-info">
+        <h3>Technical Skills</h3>
+        <div class="skills-grid">
+          <div class="skill-tag">SQL</div>
+          <div class="skill-tag">Python</div>
+          <div class="skill-tag">Power BI</div>
+          <div class="skill-tag">Excel VBA</div>
+          <div class="skill-tag">Data Modeling</div>
+          <div class="skill-tag">Data Mining</div>
+          <div class="skill-tag">Statistical Analysis</div>
+          <div class="skill-tag">Predictive Analytics</div>
+        </div>
+      </div>
+      
+      <div class="contact-info">
+        <h3>Data Collection Tools</h3>
+        <div class="skills-grid">
+          <div class="skill-tag">KoboCollect</div>
+          <div class="skill-tag">SurveyCTO</div>
+          <div class="skill-tag">ODK</div>
+          <div class="skill-tag">REDCap</div>
+          <div class="skill-tag">Qualtrics</div>
+        </div>
       </div>
     </aside>
 
-    <article class="card" id="profile">
-      <h2>Profile</h2>
-      <p>Detail-oriented data scientist with a BSc in Mathematics & Computer Science (Statistics) and continuing Applied Data Science training. Over five years' experience preparing model-ready datasets, building dashboards, ensuring data quality, and communicating findings to technical and non-technical stakeholders.</p>
+    <article class="main-card" id="profile">
+      <h2>Professional Summary</h2>
+      <p>Results-driven Data Scientist with over five years of comprehensive experience in data management, quantitative and qualitative analysis, and program evaluation across diverse development initiatives. Proficient in advanced analytics tools including SQL, Power BI, and Python, with demonstrated expertise in designing data-driven strategies, monitoring and evaluation (M&E) frameworks, and stakeholder collaboration.</p>
+      
+      <p>Holds a BSc in Mathematics and Computer Science with postgraduate training in Data Science, Policy Formulation, and Resource Mobilization. Passionate about leveraging analytical expertise to drive sustainable development, with a proven track record in delivering actionable insights for economic and social impact. Adept at capacity building, project coordination, and communicating complex data to diverse audiences.</p>
 
-      <h3>Core Competencies</h3>
+      <h2>Professional Experience</h2>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">MERL Officer</div>
+            <div class="experience-company">Makueni Development Trust</div>
+          </div>
+        </div>
+        <ul>
+          <li>Designed and implemented MERL plans aligned with USAID Ubora Mashinani standards, integrating custom indicators to capture local impacts</li>
+          <li>Conducted quantitative and qualitative analyses to assess program effectiveness, generating actionable M&E reports for donors and stakeholders</li>
+          <li>Led data quality assurance through field visits, audits, and validation processes, ensuring 95% data accuracy and reliability</li>
+          <li>Applied Collaboration, Learning, and Adaptation (CLA) tools to track partnerships with LDOs, private sector, and county governments</li>
+          <li>Developed and maintained a Member Management Information System (MMIS) with dashboards disaggregating data by demographics</li>
+          <li>Trained over 50 LDO staff in data collection, analysis, and reporting, empowering data-driven decision-making</li>
+          <li>Created data dashboards and visual reports using Power BI, effectively communicating program progress and insights</li>
+        </ul>
+      </div>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Programmes Coordinator</div>
+            <div class="experience-company">Youth for Sustainable Development</div>
+          </div>
+        </div>
+        <ul>
+          <li>Led a seven-month SRHR initiative reducing adolescent pregnancies and SGBV, coordinating activities to enhance education and services</li>
+          <li>Engaged local authorities, community leaders, and stakeholders to align project goals with county priorities, securing 100% stakeholder buy-in</li>
+          <li>Ensured compliance with HR, financial, and safeguarding policies, maintaining high standards of transparency and ethical conduct</li>
+          <li>Delivered measurable outcomes, advancing gender equity and community inclusivity through data-driven strategies</li>
+        </ul>
+      </div>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Lead Performance Data Analyst</div>
+            <div class="experience-company">Farm Concern International</div>
+          </div>
+        </div>
+        <ul>
+          <li>Collected and analyzed data on agricultural, manufacturing, retail, and service-based businesses in Malawi and Tanzania</li>
+          <li>Performed statistical analysis to uncover trends, calculate profit margins, and identify high-performing business models</li>
+          <li>Prepared comprehensive findings reports and developed advisory portfolios for strategic investments</li>
+          <li>Utilized SQL and Python to process large datasets, enhancing efficiency and accuracy in data modeling</li>
+        </ul>
+      </div>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Data Quality Officer</div>
+            <div class="experience-company">Trends and Insights Africa</div>
+          </div>
+        </div>
+        <ul>
+          <li>Led data quality assurance initiatives, ensuring data accuracy and consistency across multiple databases</li>
+          <li>Developed and implemented data validation processes and data cleansing techniques to improve data integrity</li>
+          <li>Conducted regular audits and data reviews to identify and resolve data quality issues</li>
+          <li>Collaborated with cross-functional teams to develop and implement data governance policies</li>
+        </ul>
+      </div>
+      
+      <div class="experience-item">
+        <div class="experience-header">
+          <div>
+            <div class="experience-title">Statistics Intern</div>
+            <div class="experience-company">Makueni County Government</div>
+          </div>
+        </div>
+        <ul>
+          <li>Conducted data collection, scrubbing, and analysis to support various statistical projects and research studies</li>
+          <li>Performed data validation and quality checks to ensure the accuracy and reliability of data sources</li>
+          <li>Participated in data analysis and reporting activities, presenting findings to senior team members</li>
+        </ul>
+      </div>
+
+      <h2>Core Competencies</h2>
+      <div class="competency-grid">
+        <div class="competency-category">
+          <h4>Data Analytics & Visualization</h4>
+          <ul>
+            <li>SQL, Power BI, Python</li>
+            <li>Excel (VBA, Advanced)</li>
+            <li>Data Modeling</li>
+            <li>Data Visualization Tools</li>
+          </ul>
+        </div>
+        
+        <div class="competency-category">
+          <h4>Monitoring & Evaluation</h4>
+          <ul>
+            <li>MERL frameworks</li>
+            <li>KPIs and Indicators</li>
+            <li>Most Significant Change</li>
+            <li>Outcome Harvesting</li>
+            <li>CLA Matrix</li>
+          </ul>
+        </div>
+        
+        <div class="competency-category">
+          <h4>Statistical Analysis</h4>
+          <ul>
+            <li>Quantitative Analysis</li>
+            <li>Qualitative Analysis</li>
+            <li>Predictive Analysis</li>
+            <li>Data Mining</li>
+            <li>Statistical Analysis Plans</li>
+          </ul>
+        </div>
+        
+        <div class="competency-category">
+          <h4>Data Management</h4>
+          <ul>
+            <li>Database Administration</li>
+            <li>Data Cleaning</li>
+            <li>Data Validation</li>
+            <li>MMIS Dashboards</li>
+            <li>Data Governance</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>Education & Certifications</h2>
+      
+      <div class="education-item">
+        <div class="education-header">
+          <div class="education-degree">Applied Data Science</div>
+          <div class="education-date">2025 - Current</div>
+        </div>
+        <div class="education-institution">WorldQuant University - Washington D.C.</div>
+      </div>
+      
+      <div class="education-item">
+        <div class="education-header">
+          <div class="education-degree">Data Science Certificate</div>
+          <div class="education-date">2024</div>
+        </div>
+        <div class="education-institution">Simplilearn SkillUp - Online</div>
+      </div>
+      
+      <div class="education-item">
+        <div class="education-header">
+          <div class="education-degree">BSc Mathematics & Computer Science (Statistics)</div>
+          <div class="education-date">2014 - 2019</div>
+        </div>
+        <div class="education-institution">Meru University of Science and Technology</div>
+      </div>
+      
+      <div class="education-item">
+        <div class="education-header">
+          <div class="education-degree">Kenya Certificate of Secondary Education</div>
+          <div class="education-date">2010 - 2013</div>
+        </div>
+        <div class="education-institution">Kyannginywa High School</div>
+      </div>
+
+      <h2>Key Projects</h2>
       <ul>
-        <li>SQL, Python (Pandas), Power BI, Advanced Excel (VBA)</li>
-        <li>Data collection (KoboCollect, ODK, REDCap, SurveyCTO)</li>
-        <li>Data governance, ETL, and QA/validation</li>
-        <li>Annotation workflows, LLM evaluation, technical writing</li>
+        <li><strong>Farm Concern International</strong> - Building business portfolios for Tanzania & Malawi agribusiness models</li>
+        <li><strong>KIWASH USAID Project</strong> - Mapping water sources in Makueni County with Management Information System</li>
+        <li><strong>Human-Carnivore Conflict Study</strong> - Socioeconomic and cultural dimensions in Kajiado County, Kenya</li>
       </ul>
-
-      <h3>Education</h3>
-      <p><strong>BSc Mathematics & Computer Science (Statistics)</strong> — Meru University (2014–2019)</p>
-      <p><strong>Applied Data Science</strong> — WorldQuant University (2025 ongoing)</p>
-      <p><strong>Data Science Certificate</strong> — Simplilearn SkillUp (2024)</p>
     </article>
   </section>
 </main>
 
-<footer class="wrap" style="text-align:center;color:var(--muted);padding:22px 0">© 2025 Mwanza Wambua</footer>
+<footer class="wrap">
+  <div>© 2025 Mwanza Wambua — Makueni, Kenya • English (C2) • Swahili (C1)</div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+  const mobileNav = document.querySelector('.mobile-nav');
+  
+  mobileMenuBtn.addEventListener('click', function() {
+    this.classList.toggle('active');
+    mobileNav.classList.toggle('active');
+    this.setAttribute('aria-expanded', this.classList.contains('active'));
+  });
+  
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('header')) {
+      mobileMenuBtn.classList.remove('active');
+      mobileNav.classList.remove('active');
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+</script>
 </body>
 </html>
 
